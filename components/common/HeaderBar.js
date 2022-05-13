@@ -2,7 +2,7 @@ import { StyleSheet, Text, View,TextInput } from 'react-native'
 import React from 'react'
 import { Ionicons,FontAwesome,Entypo  } from '@expo/vector-icons';
 
-export default function HeaderBar() {
+export default function HeaderBar({navigation}) {
     
   return (
     <View style={styles.tag_header}>

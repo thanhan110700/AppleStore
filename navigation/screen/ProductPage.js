@@ -1,29 +1,36 @@
 import React ,{useState, useEffect} from 'react';
-import {View, Text, Picker,ScrollView, StyleSheet, Dimensions} from 'react-native';
+import {View, Text,ScrollView, StyleSheet, Dimensions} from 'react-native';
+import {Picker} from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import CardProduct from '../../components/common/CardProduct';
+import { createStackNavigator } from '@react-navigation/stack';
+import DetailProduct from './DetailProduct';
+
+const Stack = createStackNavigator();
 const {height,width} = Dimensions.get("window")
-const ProductPage = () => {
+const ProductPage = ({navigation}) => {
     const [filterProduct, setFilterProduct] = useState("iphone");
     const [listProduct, setListProduct] = useState([]);
     useEffect(()=>{
-        axios.get("http://localhost:3000/api/"+filterProduct+"/")
-        .then(function (response) {
-            // handle success
-                setListProduct(response.data)
+        fetch('http://localhost:3000/api/'+filterProduct+'/', 
+            {
+                method: 'GET',
             })
-            .catch(function (error) {
-            // handle error
-            console.log(error);
-        })
+            .then((response) => response.json())
+            .then((json) => {
+                setListProduct(json)
+            }).catch((error) => {
+                console.error(error);
+            });
     },[filterProduct])
-    return (
+    const Product = () =>{
+        return (    
         <View style={styles.shadowProp}>
             <View style={styles.tag_filter_product}>
                 <Ionicons name="filter" size={25} color="black" style={styles.icon_filter} />
                 <Text style={styles.txt_filter}>Danh mục</Text>
-                <Picker
+                <Picker 
                     selectedValue={filterProduct}
                     style={styles.picker_product}
                     onValueChange={(itemValue, itemIndex) => setFilterProduct(itemValue)}
@@ -38,13 +45,28 @@ const ProductPage = () => {
                 <View style={styles.tag_list}>
                     {listProduct.map((data,index)=>{
                         return <View style={styles.product_list} key={index}>
-                                <CardProduct data={data}  />
+                                <CardProduct navigation={navigation} data={data}  />
                             </View>
                     })}
                 </View>
             </ScrollView>
             </View>
         </View>
+        )        
+    }
+    return (
+        <Stack.Navigator 
+         initialRouteName='Product'
+         >
+            <Stack.Screen
+             name="Product" 
+             component={Product} 
+             options={{headerShown:false}} />
+            <Stack.Screen
+             name="DetailProduct" 
+             component={DetailProduct} 
+             options={{title:"Chi tiết sản phẩm"}} />   
+        </Stack.Navigator>
     );
 }
 

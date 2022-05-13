@@ -1,10 +1,13 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
-const CardProduct = ({data}) => {
+const CardProduct = ({navigation,data}) => {
     console.log(data.images)
+    const handlePressProduct = () =>{
+        navigation.navigate("DetailProduct",{data:data})
+    }
     return (
-        <View style={[styles.card_product,styles.shadowProp]}>
+        <TouchableOpacity  style={[styles.card_product,styles.shadowProp]} onPress={()=>handlePressProduct()}>
             <View style={styles.tag_img}>
                 <Image 
                 source={{uri:data.images[0]}} 
@@ -21,7 +24,7 @@ const CardProduct = ({data}) => {
                 <Text style={styles.description_product}>Lượt xem: {data.view}</Text>
                 
             </View>
-        </View>
+        </TouchableOpacity >
     );
 }
 

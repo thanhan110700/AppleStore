@@ -6,19 +6,17 @@ const {width,height} = Dimensions.get('window')
 const HomePage = ({navigation}) => {
     const [featuredproductList,setList] = useState([])
     useEffect(() => {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source();
-        axios.get('http://localhost:3000/api/iphone/getFeaturedProduct',{
-            cancelToken: source.token
-        })
-            .then(function (response) {
-            // handle success
-                setList(response.data)
-            })
-            .catch(function (error) {
-            // handle error
-            console.log(error);
-            })
+        const CancelToken = axios.CancelToken
+        const source = CancelToken.source()
+        
+        fetch('http://localhost:3000/api/iphone/getFeaturedProduct', {
+            method: 'GET',})
+            .then((response) => response.json())
+            .then((json) => {
+                setList(json)
+            }).catch((error) => {
+                console.error(error);
+            });
         return () => {
             // cancel the subscription
             source.cancel();
@@ -63,7 +61,7 @@ const HomePage = ({navigation}) => {
                 <View style={styles.tag_list}>
                     {featuredproductList.map((data,index)=>{
                         return <View style={styles.featured_list} key={index}>
-                                <CardProduct data={data}  />
+                                <CardProduct navigation={navigation} data={data}  />
                             </View>
                     })}
                 </View>

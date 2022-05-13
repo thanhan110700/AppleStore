@@ -1,26 +1,28 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View,Button, StyleSheet} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 //Screen
 import HomePage from './screen/HomePage';
-import Menu from './screen/MenuPage';
+import MenuPage from './screen/MenuPage';
 import { NavigationContainer } from '@react-navigation/native';
 import HeaderBar from '../components/common/HeaderBar';
 import ProductPage from './screen/ProductPage';
+import DetailProduct from './screen/DetailProduct';
 //Screen Name
 const homeName = "Trang chủ"
 const productName = "Sản phẩm"
-const menuName = "Menu"
+const menuName = "Danh mục"
 const Tab = createBottomTabNavigator()
-const MainContainer = () => {
+
+const MainContainer = ({navigation}) => {
     return (
-        <NavigationContainer>
-            <HeaderBar />
             <Tab.Navigator
                 initialRouteName={homeName}
+                
                 screenOptions={({route})=>({
+
                     tabBarIcon: ({focused, color, size})=>{
                         let iconName
                         let rn = route.name
@@ -37,20 +39,19 @@ const MainContainer = () => {
                     },
                     headerShown:false
                 })}>
-                <Tab.Screen
-                    name={homeName}
-                    component={HomePage}
-                />
-                <Tab.Screen
-                    name={productName}
-                    component={ProductPage}
-                />
-                <Tab.Screen
-                    name={menuName}
-                    component={Menu}
-                />
+                    <Tab.Screen
+                        name={homeName}
+                        component={HomePage}
+                    />
+                    <Tab.Screen
+                        name={productName}
+                        component={ProductPage}
+                    />
+                    <Tab.Screen
+                        name={menuName}
+                        component={MenuPage}  
+                    />
             </Tab.Navigator>
-        </NavigationContainer>
     );
 }
 
