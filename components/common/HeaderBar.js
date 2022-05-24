@@ -1,29 +1,15 @@
 import { StyleSheet, Text, View,TextInput } from 'react-native'
 import React from 'react'
 import { Ionicons,FontAwesome,Entypo  } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
 export default function HeaderBar({navigation}) {
-    
   return (
     <View style={styles.tag_header}>
         <Text 
             style={styles.text_logo}>
             AppleStore
         </Text>
-        <View 
-            style={styles.tag_header_right}>
-            
-            <FontAwesome 
-                name="search" 
-                size={24} 
-                color="white" 
-                style={styles.icon_search}/>
-            <Entypo 
-                name="shopping-cart" 
-                size={24} 
-                color="white"
-                style={styles.icon_cart} />
-        </View>
     </View>
   )
 }
@@ -31,12 +17,11 @@ export default function HeaderBar({navigation}) {
 const styles = StyleSheet.create({
     tag_header:{
         backgroundColor: '#22262bf8',
-        paddingTop:65,
+        paddingTop:55,
         paddingHorizontal:20,
         paddingBottom:10,
         display:'flex',
         flexDirection:"row"
-
     },
     text_logo:{
         flex:8,
@@ -45,7 +30,7 @@ const styles = StyleSheet.create({
     },
     tag_header_right:{
         flex:4,
-        justifyContent:"end",
+        justifyContent:"flex-end",
         alignItems:"center",
         flexDirection:"row"
     },
@@ -64,5 +49,6 @@ const styles = StyleSheet.create({
     icon_cart:{
         flex:1,
         position:"absolute",   
-    }
+    },
+    
 })

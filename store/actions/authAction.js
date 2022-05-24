@@ -9,4 +9,9 @@ const LogoutAction = () =>{
         type:"LOG_OUT"
     }
 }
-export {LoginAction,LogoutAction}
+const ChangeInfoAction = () =>{
+    return {
+        type:"CHANGE_INFO"
+    }
+}
+export {LoginAction,LogoutAction,ChangeInfoAction}

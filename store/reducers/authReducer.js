@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+var isLogin = false
 const storeData = async (key,value) => {
     try {
       await AsyncStorage.setItem(key, value)
@@ -22,7 +23,7 @@ const getData = async (key) => {
 }
 const removeData = async (key) => {
     try {
-        await AsyncStorage.removeItem(key);
+        await AsyncStorage.removeItem("token");
         return true;
     }
     catch(exception) {
@@ -30,8 +31,12 @@ const removeData = async (key) => {
     }
 }
 const initialState = {
-    isLogin:getData("isLogin")
+    isLogin:getData("token"),
+    changeInfo:0
 }
+
+
+
 const authReducer = (state = initialState ,actions) =>{
     
     switch(actions.type){
@@ -40,7 +45,7 @@ const authReducer = (state = initialState ,actions) =>{
                 storeData("token",actions.payload.token)
                 storeData("uid",actions.payload.id)
                 storeData("isLogin",true)
-                islogin = true
+            
             } catch (error) {
                 console.log("error",error)
             }
@@ -48,15 +53,21 @@ const authReducer = (state = initialState ,actions) =>{
             return {...state,isLogin:true}
         case "LOG_OUT":
             try {
+
                 removeData("token")
                 removeData("uid")
                 removeData("isLogin")
+
                 
             } catch (error) {
                 console.log("error",error)
             }
             console.log("log 2")
             return {...state,isLogin:false}
+        case "CHANGE_INFO":
+            let numchange = state.changeInfo
+            numchange = numchange+1
+            return {...state,changeInfo:numchange}
         default:
             return {...state}
     }

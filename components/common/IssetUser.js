@@ -17,7 +17,7 @@ const IssetUser = ({navigation,dataUser}) => {
         navigation.navigate("TagMenuUserInfor",{data:dataUser})
     }
     const handlePressOrder = () =>{
-        
+        navigation.navigate("OrderScreen",{data:dataUser})
     }
     return (
         <View style={{width:width-10}}>
@@ -49,7 +49,7 @@ const IssetUser = ({navigation,dataUser}) => {
                     <Text>Thông tin Cá nhân</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                 onPress={()=>handlePressOrder}
+                 onPress={()=>handlePressOrder()}
                  style={[styles.btn_options,styles.shadow]}>
                     <AntDesign
                      name="profile" 

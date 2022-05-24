@@ -1,38 +1,55 @@
-import React,{useState} from 'react';
-import {View,Text,Button, ScrollView, StyleSheet, Dimensions} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions } from 'react-native';
 import PreviewProduct from '../../components/common/PreviewProduct';
-import {Table, TableWrapper, Cell} from 'react-native-table-component'
-const {height,width} = Dimensions.get('window')
-const DetailProduct = ({navigation,route}) => {
+import { Table, TableWrapper, Cell } from 'react-native-table-component'
+import { useDispatch } from 'react-redux';
+import { addCart } from '../../store/actions/cartAction';
+import TagCart from '../../components/common/TagCart';
+const { height, width } = Dimensions.get('window')
+const DetailProduct = ({ navigation, route }) => {
+
+    const dispatch = useDispatch()
     const data = route.params.data
-    const [choosingMemory,setChoosingMemory] = useState(data.type[0].memory)
-    const [choosingColor,setChoosingColor] = useState(data.type[0].color[0])
-    const [choosingPrice,setChoosingPrice] = useState(data.type[0].price)
+    const [choosingMemory, setChoosingMemory] = useState(data.type[0].memory)
+    const [choosingColor, setChoosingColor] = useState(data.type[0].color[0])
+    const [choosingPrice, setChoosingPrice] = useState(data.type[0].price)
     const dataDetail = [
-        ['Màn hình',data.display],
-        ['Hệ điều hành',data.os],
-        ['Camera sau',data.backcamera],
-        ['Camera trước',data.frontcamera],
-        ['Chip',data.chip],
-        ['RAM',data.ram],
-        ['Bộ nhớ trong',choosingMemory],
-        ['Sim',data.sim],
-        ['Pin, Sạc',data.pin]
+        ['Màn hình', data.display],
+        ['Hệ điều hành', data.os],
+        ['Camera sau', data.backcamera],
+        ['Camera trước', data.frontcamera],
+        ['Chip', data.chip],
+        ['RAM', data.ram],
+        ['Bộ nhớ trong', choosingMemory],
+        ['Sim', data.sim],
+        ['Pin, Sạc', data.pin]
     ]
-    console.log("data",data)
-    console.log("first",choosingColor)
-    const handleChooseMemory = (data,price) =>{
+    console.log("data", data)
+    const handleChooseMemory = (data, price) => {
         setChoosingMemory(data)
         setChoosingPrice(price)
     }
-    const handleChooseColor = (data) =>{
+    const handleChooseColor = (data) => {
         setChoosingColor(data)
+    }
+    const handlePressAddCart = () => {
+        let product = {
+            id_product: data._id,
+            name: data.name,
+            image: data.images[0],
+            memory: choosingMemory,
+            color: choosingColor,
+            price: choosingPrice,
+            amount: 1,
+        }
+        dispatch(addCart(product))
     }
     return (
         <View style={styles.container}>
+            <TagCart navigation={navigation} />
             <ScrollView style={styles.scroll}>
                 <View style={styles.tag_preview}>
-                    <PreviewProduct listImage={data.images}/>
+                    <PreviewProduct listImage={data.images} />
                 </View>
                 <View>
                     <Text style={styles.txt_name}>
@@ -42,45 +59,57 @@ const DetailProduct = ({navigation,route}) => {
                         Giá: {choosingPrice} VNĐ
                     </Text>
                     <View style={styles.tag_version}>
-                        {data.type.map((value,index)=>{
+                        {data.type.map((value, index) => {
                             return (
-                                <View 
-                                style={[styles.btn_version,choosingMemory===value.memory?styles.active_btn_version:""]} 
-                                key={index}
-                                onStartShouldSetResponder={() => handleChooseMemory(value.memory,value.price)}>
+                                <View
+                                    style={[styles.btn_version, choosingMemory === value.memory ? styles.active_btn_version : ""]}
+                                    key={index}
+                                    onStartShouldSetResponder={() => handleChooseMemory(value.memory, value.price)}>
                                     <Text>{value.memory}</Text>
                                 </View>
                             )
                         })}
                     </View>
                     <View style={styles.tag_version}>
-                        {data.type[0].color.map((value,index)=>{
+                        {data.type[0].color.map((value, index) => {
                             return (
-                                <View 
-                                style={[styles.btn_version,choosingColor===value?styles.active_btn_version:""]} 
-                                key={index}
-                                onStartShouldSetResponder={() => handleChooseColor(value)}>
+                                <View
+                                    style={[styles.btn_version, choosingColor === value ? styles.active_btn_version : ""]}
+                                    key={index}
+                                    onStartShouldSetResponder={() => handleChooseColor(value)}>
                                     <Text>{value}</Text>
                                 </View>
                             )
                         })}
                     </View>
-                    <View style={styles.tag_btn}> 
-                        <Button title='+ Giỏ hàng' color="#f194ff" style={styles.btn}/>
-                        <Button title='Mua hàng' style={styles.btn}/>
+                    <View style={styles.tag_btn}>
+                        <TouchableOpacity
+                            onPress={() => handlePressAddCart()}
+                            color="#f194ff"
+                            style={[styles.btn, styles.btn_addcart]}>
+                            <Text style={styles.txt_btn}>
+                                Thêm giỏ hàng
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.btn, styles.btn_buy]}>
+                            <Text style={styles.txt_btn}>
+                                Mua hàng
+                            </Text>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.line}/>
+                    <View style={styles.line} />
                     <View>
-                        <Table borderStyle={{borderColor: 'transparent'}}>
+                        <Table borderStyle={{ borderColor: 'transparent' }}>
                             {
                                 dataDetail.map((rowData, index) => (
-                                <TableWrapper key={index} style={styles.row}>
-                                    {
-                                    rowData.map((cellData, cellIndex) => (
-                                        <Cell key={cellIndex} data={cellData} textStyle={styles.text}/>
-                                    ))
-                                    }
-                                </TableWrapper>
+                                    <TableWrapper key={index} style={{ flexDirection: 'row', backgroundColor: '#FFF1C1' }}>
+                                        {
+                                            rowData.map((cellData, cellIndex) => (
+                                                <Cell key={cellIndex} data={cellData} textStyle={{ margin: 6 }} />
+                                            ))
+                                        }
+                                    </TableWrapper>
                                 ))
                             }
                         </Table>
@@ -93,54 +122,70 @@ const DetailProduct = ({navigation,route}) => {
 }
 
 const styles = StyleSheet.create({
-    container:{
-        alignItems:"center",
+    container: {
+        alignItems: "center",
     },
-    line:{
+    line: {
         borderBottomColor: '#8c8c8c',
         borderBottomWidth: 1,
-        width:width-20,
-        margin:10
+        width: width - 20,
+        margin: 10
     },
-    scroll:{
-        height:height-200
+    scroll: {
+        height: height - 200
     },
-    txt_name:{
-        marginTop:10,
-        fontSize:30,
-        textAlign:"center"
+    txt_name: {
+        marginTop: 10,
+        fontSize: 30,
+        textAlign: "center"
     },
-    txt_price:{
-        fontSize:20,
-        textAlign:"center"
+    txt_price: {
+        fontSize: 20,
+        textAlign: "center"
     },
-    tag_btn:{
-        flexDirection:"row",
-        justifyContent:"space-evenly",
-        marginTop:20,
+    tag_btn: {
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+        marginTop: 20,
     },
-    btn:{
-        flex:2,
+    btn: {
+        justifyContent: "center",
+        alignItems: "center",
+        marginHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 10,
+        flex: 1,
     },
-    tag_version:{
-        marginTop:10,
-        flexDirection:"row",
-        justifyContent:"center",
+    btn_buy: {
+        backgroundColor: "#2ecc71"
     },
-    
-    btn_version:{
-        borderRadius:10,
-        borderWidth:1,
-        paddingHorizontal:10,
-        paddingVertical:10,
-        margin:4
+    btn_addcart: {
+        backgroundColor: "#3498db"
     },
-    active_btn_version:{
-        borderWidth:3,
-        borderColor:"blue"
+    txt_btn: {
+        color: "white",
+        fontSize: 15
     },
-    text: { margin: 6 },
-  row: { flexDirection: 'row', backgroundColor: '#FFF1C1' },
+    tag_version: {
+        marginTop: 10,
+        flexDirection: "row",
+        justifyContent: "center",
+    },
+
+    btn_version: {
+        borderRadius: 10,
+        borderWidth: 1,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        margin: 4
+    },
+    active_btn_version: {
+        borderWidth: 3,
+        borderColor: "black"
+    },
+    text: {
+        margin: 6
+    },
 })
 
 export default DetailProduct;
