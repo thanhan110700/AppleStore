@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 1, height: 2 },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        height: height - 200
     },
     icon_filter: {
         marginRight: 10,
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     scroll_product: {
-        height: height - 200
+        height: height - 190
     },
     tag_list: {
         display: "flex",

@@ -29,26 +29,22 @@ export default function App() {
       <NavigationContainer>
         <HeaderBar />
         <Stack.Navigator
-         initialRouteName='Home'>
+          initialRouteName='Home'>
           <Stack.Screen
-              name="Home" 
-              component={MainContainer} 
-              options={{headerShown:false}}/>
+            name="Home"
+            component={MainContainer}
+            options={{ headerShown: false }} />
           <Stack.Screen
-              name="DetailProduct" 
-              component={DetailProduct} 
-              options={{title:"Chi tiết sản phẩm"}}/> 
+            name="CartScreen"
+            component={CartScreen}
+            options={{ title: "Giỏ hàng" }} />
           <Stack.Screen
-          name="CartScreen" 
-          component={CartScreen} 
-          options={{title:"Giỏ hàng"}}/> 
-          <Stack.Screen
-          name="RevenueScreen" 
-          component={RevenueScreen} 
-          options={{title:"Thanh Toán"}}/> 
+            name="RevenueScreen"
+            component={RevenueScreen}
+            options={{ title: "Thanh Toán" }} />
         </Stack.Navigator>
       </NavigationContainer>
-      
+
     </Provider>
   );
 }

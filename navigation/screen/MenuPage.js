@@ -9,6 +9,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 import UserInfor from './UserInfor';
 import OrderScreen from './OrderScreen';
+import RegisterScreen from './RegisterScreen';
 const { height, width } = Dimensions.get('window')
 const divLine = 20
 const Stack = createStackNavigator();
@@ -47,7 +48,7 @@ const MenuPage = ({ navigation }) => {
         return (<View style={styles.container}>
             {isLogin
                 ? <IssetUser navigation={navigation} dataUser={dataUser} />
-                : <LoginScreen />}
+                : <LoginScreen navigation={navigation} />}
         </View>
 
         )
@@ -68,6 +69,10 @@ const MenuPage = ({ navigation }) => {
                 name="OrderScreen"
                 component={OrderScreen}
                 options={{ title: "Danh sách đơn hàng" }} />
+            <Stack.Screen
+                name="RegisterScreen"
+                component={RegisterScreen}
+                options={{ headerShown: false }} />
         </Stack.Navigator>
     );
 }

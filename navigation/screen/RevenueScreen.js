@@ -5,7 +5,7 @@ const RevenueScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.txt_revenue_success}>
-                Thanh Toán thành công
+                Xác nhận mua hàng thành công
             </Text>
             <TouchableOpacity
                 style={styles.btn_backhomepage}

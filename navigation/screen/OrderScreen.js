@@ -5,19 +5,23 @@ import ItemProductCart from '../../components/common/ItemProductCart';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ItemOrder from '../../components/common/ItemOrder';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { changeStatus } from '../../store/actions/productActions';
 const OrderScreen = ({ navigation, route }) => {
+    const dispatch = useDispatch()
+    const status = useSelector(state => state.product.changeStatus)
     const data = route.params.data
     console.log(data)
     const [selectedValue, setSelectedValue] = useState(0)
     const [products, setProducts] = useState([])
     const [isChanged, setIsChanged] = useState(0)
-    const change = (data,value) => {
+    const change = (data, value) => {
         setProducts(data.filter(e => e.status === value))
-        setIsChanged(isChanged + 1)
+        dispatch(changeStatus())
 
     }
     useEffect(async () => {
+        console.log("selectedValue", selectedValue)
         axios.get('http://localhost:3000/api/getOrderUser/' + data._id,
             {
                 headers: {
@@ -26,40 +30,40 @@ const OrderScreen = ({ navigation, route }) => {
             })
             .then(function (response) {
                 // handle success
+                console.log("first", typeof (selectedValue))
                 let data = response.data
-                switch (selectedValue) {
+
+                switch (parseInt(selectedValue)) {
                     case 0:
                         setProducts(data)
+                        break
                     case 1:
-                        change(data,1)
+                        change(data, 1)
                         break
                     case 2:
-                        change(data,2)
+                        change(data, 2)
                         break
                     case 3:
-                        change(data,3)
+                        change(data, 3)
                         break
                     case 4:
-                        change(data,4)
+                        change(data, 4)
                         break
                     case 5:
-                        change(data,5)
+                        change(data, 5)
                         break
                     default:
                         break
                 }
-
-
             })
             .catch(function (error) {
                 // handle error
                 console.log(error);
             })
-    }, [isChanged])
-    console.log("first", isChanged)
+    }, [status])
     const handleChangeStatus = (itemValue) => {
         setSelectedValue(itemValue)
-        setIsChanged(isChanged + 1)
+        dispatch(changeStatus())
     }
     return (
         <View>
@@ -82,27 +86,27 @@ const OrderScreen = ({ navigation, route }) => {
                 >
                     <Picker.Item
                         label="Tất cả"
-                        value="0"
+                        value={0}
                     />
                     <Picker.Item
                         label="Chờ xác nhận"
-                        value="1"
+                        value={1}
                     />
                     <Picker.Item
                         label="Chờ lấy hàng"
-                        value="2"
+                        value={2}
                     />
                     <Picker.Item
                         label="Đang giao"
-                        value="3"
+                        value={3}
                     />
                     <Picker.Item
                         label="Đã giao"
-                        value="4"
+                        value={4}
                     />
                     <Picker.Item
                         label="Đã hủy"
-                        value="5"
+                        value={5}
                     />
                 </Picker>
             </View>
@@ -110,7 +114,6 @@ const OrderScreen = ({ navigation, route }) => {
                 style={styles.scroll_view}>
                 {
                     products.map((product, index) => {
-                        console.log("peo", product)
                         return <ItemOrder key={index} data={product} />
                     })
                 }

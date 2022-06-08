@@ -103,7 +103,7 @@ const DetailProduct = ({ navigation, route }) => {
                         <Table borderStyle={{ borderColor: 'transparent' }}>
                             {
                                 dataDetail.map((rowData, index) => (
-                                    <TableWrapper key={index} style={{ flexDirection: 'row', backgroundColor: '#FFF1C1' }}>
+                                    <TableWrapper key={index} style={{ flexDirection: 'row', backgroundColor: '#ecf0f1  ' }}>
                                         {
                                             rowData.map((cellData, cellIndex) => (
                                                 <Cell key={cellIndex} data={cellData} textStyle={{ margin: 6 }} />
@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginHorizontal: 20,
         paddingVertical: 10,
-        borderRadius: 10,
         flex: 1,
     },
     btn_buy: {
@@ -173,7 +172,6 @@ const styles = StyleSheet.create({
     },
 
     btn_version: {
-        borderRadius: 10,
         borderWidth: 1,
         paddingHorizontal: 10,
         paddingVertical: 10,

@@ -1,12 +1,30 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useLayoutEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
 import ItemProductOrder from './ItemProductOrder';
-
+import { changeStatus } from '../../store/actions/productActions'
+import axios from 'axios';
 const ItemOrder = ({ data }) => {
+    const dispatch = useDispatch()
     const [listProduct, setListProduct] = useState([])
     useLayoutEffect(() => {
         setListProduct(data.detail)
     }, [data])
+
+    const handleCancelOrder = async () => {
+        axios.post("http://localhost:3000/api/cancelOrder/", {
+            id: data._id,
+            token: await AsyncStorage.getItem('token')
+        })
+            .then((response) => {
+                dispatch(changeStatus())
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+    }
     return (
         <View style={[styles.container_list, styles.shadow]}>
             <Text style={[styles.txt, styles.txt_id_order]}>
@@ -36,7 +54,8 @@ const ItemOrder = ({ data }) => {
                 </Text>
                 {data.status === 1 || data.status === 2 || data.status === 3
                     ? <TouchableOpacity
-                        style={styles.btn_cancel}>
+                        style={styles.btn_cancel}
+                        onPress={() => handleCancelOrder()}>
                         <Text style={styles.txt_btn_cancel}>
                             Hủy đơn hàng
                         </Text>

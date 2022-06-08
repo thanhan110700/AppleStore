@@ -123,7 +123,7 @@ const CartScreen = ({ navigation }) => {
                     style={[styles.btn, styles.btn_revenue]}
                     onPress={() => handleRevenue()}>
                     <Text style={styles.txt_btn}>
-                        Thanh toán
+                        Xác nhận
                     </Text>
                 </TouchableOpacity>
 
