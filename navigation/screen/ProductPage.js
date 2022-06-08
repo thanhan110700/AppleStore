@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 1, height: 2 },
         shadowOpacity: 0.4,
         shadowRadius: 3,
-        height: height - 200
     },
     icon_filter: {
         marginRight: 10,

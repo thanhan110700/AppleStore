@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         margin: 10
     },
     scroll: {
-        height: height - 200
+        height: height - 220
     },
     txt_name: {
         marginTop: 10,
