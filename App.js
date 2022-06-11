@@ -17,6 +17,7 @@ import store from './store';
 import DetailProduct from './navigation/screen/DetailProduct';
 import CartScreen from './navigation/screen/CartScreen';
 import RevenueScreen from './navigation/screen/RevenueScreen';
+import Test from './navigation/test';
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator();
